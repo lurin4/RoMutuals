@@ -1,11 +1,11 @@
-🇷​​🇴​​🇲​​🇺​​🇹​​🇺​​🇦​​🇱​​🇸​
+# 🇷​​🇴​​🇲​​🇺​​🇹​​🇺​​🇦​​🇱​​🇸​
 
-𝐑𝐨𝐛𝐥𝐨𝐱 𝐌𝐮𝐭𝐮𝐚𝐥 𝐅𝐫𝐢𝐞𝐧𝐝𝐬 𝐅𝐢𝐧𝐝𝐞𝐫
+### Roblox Mutual Friends Finder
 
 An extension to help find the friends you have in common with other roblox users!
 When you visit a users profile, the list of mutual friends you have will appear within the page
 
-🛠️ Installation (Developer Mode)
+### 🛠️ Installation (Developer Mode)
 
 Since this extension is currently in development, you can install it manually:
 
