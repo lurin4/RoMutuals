@@ -9,6 +9,12 @@
     "https://apis.roblox.com/*",
     "https://www.roblox.com/*"
   ],
+  "web_accessible_resources": [
+    {
+      "resources": ["starborn.ttf"],
+      "matches": ["https://*.roblox.com/*"]
+    }
+  ],
   "content_scripts": [
     {
       "matches": ["https://www.roblox.com/users/*/profile"],

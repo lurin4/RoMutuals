@@ -1,13 +1,11 @@
-// 1. Stable 2025 API Logic
+// 1. Stable 2026 API Logic
 async function getMutuals() {
   try {
     const pathParts = window.location.pathname.split("/");
     const targetUserId = pathParts[2];
-
     const userMeta = document.querySelector('meta[name="user-data"]');
     if (!userMeta) return;
     const myUserId = userMeta.getAttribute("data-userid");
-
     if (!targetUserId || !myUserId || targetUserId === myUserId) return;
 
     const [myFriendsReq, targetFriendsReq] = await Promise.all([
@@ -17,7 +15,6 @@ async function getMutuals() {
 
     const myFriends = await myFriendsReq.json();
     const targetFriends = await targetFriendsReq.json();
-
     if (!myFriends?.data || !targetFriends?.data) return;
 
     const myFriendIds = new Set(myFriends.data.map((f) => f.id));
@@ -52,7 +49,21 @@ async function getMutuals() {
   }
 }
 
-// 2. The Final Cutesy UI
+// 2. Font Loading Logic
+const fontUrl = chrome.runtime.getURL("starborn.ttf");
+const starbornFont = new FontFace("Starborn", `url(${fontUrl})`);
+
+starbornFont
+  .load()
+  .then((loadedFont) => {
+    document.fonts.add(loadedFont);
+    console.log("🌸 Starborn font loaded successfully!");
+  })
+  .catch((err) => {
+    console.warn("🌸 Font loading failed:", err);
+  });
+
+// 2. UI Rendering Logic
 function displayMutuals(mutuals) {
   if (document.getElementById("mutuals-container")) return;
 
@@ -61,88 +72,108 @@ function displayMutuals(mutuals) {
 
   const styleSheet = document.createElement("style");
   styleSheet.innerText = `
-        #mutuals-list-grid::-webkit-scrollbar { width: 6px; }
-        #mutuals-list-grid::-webkit-scrollbar-thumb { background: #ffdeeb; border-radius: 10px; }
+        #mutuals-list-grid::-webkit-scrollbar { width: 5px; }
+        #mutuals-list-grid::-webkit-scrollbar-thumb { background: #ffc2ccff; border-radius: 10px; }
         
         .mutual-card {
-            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.2s, box-shadow 0.2s !important;
+            transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) !important;
+            margin-bottom: 10px;
+            background: #ffffff !important;
+            box-shadow: 0 2px 5px rgba(255, 182, 193, 0.2) !important;
         }
 
-        /* Fixed Hover: Increased headroom and safety */
         .mutual-card:hover { 
-            transform: translateY(-8px) !important; 
-            box-shadow: 0 8px 20px rgba(255, 167, 201, 0.6) !important; 
-            border-color: #ff85b3 !important; 
-            background: rgba(255, 255, 255, 0.95) !important;
-            z-index: 10 !important;
+            transform: scale(1.05) !important; 
+            background: #fff0f5 !important;
+            border-color: #ff94a2ff !important; 
+            box-shadow: 0 4px 12px rgba(255, 133, 179, 0.4) !important;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8) translateX(50px); opacity: 0; }
+            100% { transform: scale(1) translateX(0); opacity: 1; }
         }
     `;
   document.head.appendChild(styleSheet);
 
-  // FIXED: rgba background lets RoPro backgrounds show through
   container.style.cssText = `
-        background: rgba(0, 0, 0, 0.45) !important; 
-        padding: 5px 60px 25px 60px !important; 
-        border-radius: 18px !important;
-        margin: 10px 0 !important;
-        border: 2px solid #ffdeeb !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
-        width: 100% !important;
-        display: block !important;
-        clear: both !important;
-        box-sizing: border-box !important;
-        text-align: center !important;
-        overflow: visible !important;
+        position: fixed !important;
+        top: 60px !important; 
+        right: 200px !important;
+        width: 200px !important;
+        background: #fff5f8 !important; 
+        padding: 18px !important; 
+        border-radius: 25px !important;
+        border: 3px solid #ffc2c7ff !important;
+        box-shadow: 0 10px 25px rgba(255, 154, 176, 0.3) !important;
+        z-index: 10000 !important;
+        animation: popIn 0.4s ease-out;
     `;
 
   let html = `
-        <h3 style="color: #ffa7c9ff !important; margin-top: 10px !important; margin-bottom: 20px !important; font-size: 18px !important; font-weight: bold !important; font-family: sans-serif !important; text-align: center !important; text-shadow: 1px 1px 3px rgba(0,0,0,0.5) !important;">
-            ᯓ★ Mutual Friends (${mutuals.length})
-        </h3>
+        <div style="
+            color: #ff6392ff !important; 
+            margin-bottom: 2px !important; 
+            font-size: 18px !important; 
+            font-weight: normal !important; 
+            text-align: center !important; 
+            font-family: 'Starborn', sans-serif !important; 
+            letter-spacing: 1px !important;
+            text-shadow: 
+                -1.5px -1.5px 0 #fff,  
+                 1.5px -1.5px 0 #fff,
+                -1.5px  1.5px 0 #fff,
+                 1.5px  1.5px 0 #fff, 
+                 0px 0px 10px rgba(255, 113, 156, 0.8) !important;
+        ">
+            MUTUAL FRIENDS
+        </div>
+        <div style="
+            color: #ff6392ff !important;
+            font-size: 14px !important;
+            text-align: center !important;
+            margin-bottom: 8px !important;
+            text-shadow: 1px 1px 0px #fff;
+        ">
+            ⸜(｡˃ ᵕ ˂ )⸝♡
+        </div>
+        <div style="color: #ff85b3 !important; font-size: 11px !important; text-align: center !important; margin-bottom: 15px !important; font-weight: 800; letter-spacing: 2px; opacity: 0.8;">
+            ୨୧ — ${mutuals.length} TOTAL — ୨୧
+        </div>
     `;
 
   if (mutuals.length === 0) {
     html +=
-      '<p style="color: #ffb3d1 !important; font-size: 14px !important; font-style: italic !important; text-align: center;">got no mutuals :(</p>';
+      '<p style="color: #ff94a2ff; font-size: 12px; text-align: center; font-style: italic;">none yet! ♡</p>';
   } else {
-    // FIXED: Added 15px top padding to grid to prevent clipping on hover
     html +=
-      '<div id="mutuals-list-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; max-height: 300px; overflow-y: auto; overflow-x: hidden; padding: 15px 5px 10px 5px; transition: all 0.3s ease; justify-content: center !important; box-sizing: border-box !important;">';
+      '<div id="mutuals-list-grid" style="max-height: 350px; overflow-y: auto; padding-right: 5px;">';
 
     mutuals.forEach((user) => {
       html += `
-                <div class="mutual-card" style="background: rgba(255, 255, 255, 0.75) !important; backdrop-filter: blur(6px) !important; -webkit-backdrop-filter: blur(6px) !important; padding: 14px 8px !important; border-radius: 12px !important; border: 1px solid #ffe3ed !important; text-align: center !important; cursor: pointer; min-width: 0 !important; position: relative !important;">
-                    
-                    <a href="/users/${user.id}/profile" style="color: #080808ff !important; text-shadow: 0.5px 0.5px 1px rgba(255, 255, 255, 0.8) !important; text-decoration: none !important; font-size: 15px !important; font-weight: bold !important; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px !important;">
-                        ${user.displayName}
-                    </a>
-                    
-                    <div style="color: #ff96b0 !important; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5) !important; font-size: 11px !important; font-weight: 600 !important; overflow: hidden; text-overflow: ellipsis;">
-                        @${user.username}
+                <a href="/users/${user.id}/profile" style="text-decoration: none !important; display: block;">
+                    <div class="mutual-card" style="padding: 12px 10px !important; border-radius: 15px !important; border: 1.5px solid #ffdee4ff !important; text-align: center !important;">
+                        <div style="color: #4a4a4a !important; font-size: 13px !important; font-weight: 700 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;">
+                            ${user.displayName}
+                        </div>
+                        <div style="color: #ff94a2ff !important; font-size: 10px !important; font-weight: 500 !important; opacity: 0.9;">
+                            @${user.username}
+                        </div>
                     </div>
-                </div>`;
+                </a>`;
     });
     html += "</div>";
   }
 
   container.innerHTML = html;
-
-  const anchor =
-    document.querySelector(".header-caption") ||
-    document.querySelector(".profile-header");
-  if (anchor) {
-    anchor.appendChild(container);
-  }
+  document.body.appendChild(container);
 }
 
 // 3. Execution Logic
 const observer = new MutationObserver((mutations, obs) => {
-  if (document.querySelector(".header-caption")) {
+  if (document.querySelector(".profile-header")) {
     getMutuals();
     obs.disconnect();
   }
 });
 observer.observe(document.body, { childList: true, subtree: true });
-setTimeout(getMutuals, 3000);
