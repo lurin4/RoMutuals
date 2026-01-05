@@ -1,0 +1,27 @@
+#mutuals-container {
+    background: #ffbfcf;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    color: rgb(255, 208, 208);
+    border: 1px solid #393b3d;
+}
+
+#mutuals-container h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.mutual-user {
+    padding: 5px 0;
+}
+
+.mutual-user a {
+    color: #00b2ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.mutual-user a:hover {
+    text-decoration: underline;
+}
