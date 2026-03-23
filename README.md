@@ -17,6 +17,6 @@ Since this extension is currently in development, you can install it manually:
 
 4. Click "Load unpacked".
 
-5. Select the folder where you extracted the extension files, and you got it!
+5. Select the folder where you extracted the extension files, click it once again until you see the second folder, and you got it!
 
 This extension is 100% safe and secure as it doesn't store personal data or any user information as processing is all done locally
