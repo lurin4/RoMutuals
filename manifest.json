@@ -12,7 +12,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["starborn.ttf"],
+      "resources": ["Starborn.ttf"],
       "matches": ["https://*.roblox.com/*"]
     }
   ],
