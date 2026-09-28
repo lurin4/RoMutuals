@@ -4,8 +4,8 @@
 
 RoMutuals is a Chrome extension (Manifest V3) that adds a mutual friends list to Roblox profiles. Open someone's profile and the list appears within the page, with no extra tabs or manual comparing.
 
-![RoMutuals showing mutual friends on a Roblox profile](<img width="324" height="616" alt="image" src="https://github.com/user-attachments/assets/85b6a0de-267c-4597-8e60-a3335645e9f2" />
-)
+<img width="324" height="616" alt="image" src="https://github.com/user-attachments/assets/cddc484e-df57-40df-8d4a-cb4df9a4a6dd" />
+
 
 ## Features
 
